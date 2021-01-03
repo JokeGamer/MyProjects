@@ -1,0 +1,91 @@
+local ReplicatedStorage_3 = game:GetService("ReplicatedStorage")
+local Workspace_6 = game:GetService("Workspace")
+local Players_9 = game:GetService("Players")
+local v10 = {}
+v10.RemoteEvent = true
+v10.RemoteFunction = true
+v10.BindableEvent = true
+v10.BindableFunction = true
+local v122 = {}
+local v12 = {}
+v12[22653509] = true
+v12[61395487] = true
+v12[796473228] = true
+v122.Admins = v12
+local function CreateFolder_1(v16, v17, v18)
+    if v17 then
+        if v18 then
+            local v21 = v18:FindFirstChild(v17)
+            if v21 then
+                if v21:IsA("Folder") then
+                    warn("Folder " .. v17 .. " already exists")
+                    return v21
+                end
+            end
+            local v31 = Instance.new("Folder")
+            v31.Name = v17
+            v31.Parent = v18
+            return v31
+        end
+    end
+    return nil
+end
+v122.CreateFolder = CreateFolder_1
+local function CreateEvent_1(v35, v36, v37, v38)
+    if v36 then
+        local v39
+        local v40
+        if v37 then
+            local v60 = v37
+        else
+            local Events_44 = ReplicatedStorage_3:WaitForChild("Events", 1)
+            if Events_44 then
+                local v61 = Events_44
+            else
+                warn("Could not find the Events folder")
+                return nil
+            end
+        end
+        if v38 then
+            if v10[v38] then
+                local v63 = v38
+            else
+                local v64 = "RemoteEvent"
+                local v65 = "RemoteEvent"
+            end
+            local v50 = v61:FindFirstChild(v36)
+            if v50 then
+                if v50:IsA(v65) then
+                    warn("Event " .. v36 .. " already exists")
+                    return v50
+                end
+            end
+            local v59 = Instance.new(v65)
+            v59.Name = v36
+            v59.Parent = v61
+            return v59
+            return nil
+        end
+    end
+end
+v122.CreateEvent = CreateEvent_1
+local function CreateExplosion_1(v69, v70, v71)
+    local v74 = Instance.new("Explosion")
+    v74.Position = v70.Position
+    v74.DestroyJointRadiusPercent = 0
+    v74.BlastRadius = v70.BlastRadius
+    v74.BlastPressure = 0
+    v74.Parent = Workspace_6
+    local function v77(v78)
+        local Parent_79 = v78.Parent
+        local Humanoid_82 = Parent_79:FindFirstChild("Humanoid")
+        if Humanoid_82 then
+            if v78.Name == "HumanoidRootPart" then
+                ReplicatedStorage_3.Events.RagdollState:FireClient(Players_9:GetPlayerFromCharacter(Parent_79), Humanoid_82.RootPart.Position + Vector3.new(0, v70.ForceHeight, 0) - v74.Position.Unit * v70.Force, nil, v71)
+            end
+        end
+    end
+    v74.Hit:Connect(v77)
+end
+v122.CreateExplosion = CreateExplosion_1
+return v122
